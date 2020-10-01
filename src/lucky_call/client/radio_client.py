@@ -20,7 +20,7 @@ class RadioClient(mp.Process):
         while True:
             try:
                 word = self.sub_queue.get()
-                print("Received word ", word)
+                print("Client %d received word %s" % (os.getpid(), word))
                 if word is None:
                     break
                 if word == KEYWORD:
