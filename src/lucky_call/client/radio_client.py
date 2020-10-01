@@ -34,7 +34,7 @@ class RadioClient(mp.Process):
                     self.req_queue.put(
                         {
                             'pid': os.getpid(),
-                            'message': KEYWORD+str(randrange(0, MAX_NUM))
+                            'message': KEYWORD+str(randrange(100, MAX_NUM))
                         }
                     )
                     # Terminate client after sending request
