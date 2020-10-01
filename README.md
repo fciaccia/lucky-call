@@ -133,9 +133,9 @@ The system is also missing unit-testing, which would benefit code
 maintainability.
 
 ## Contest fairness
-Given that between 1 and 999 we have 90 multiples of 11 we obtain that the
+Given that between 100 and 999 we have 81 multiples of 11 we obtain that the
 probability for one of the random client numbers of being a multiple of 11 is
-90/999 ~ 9%. However, given the time constraints and my current mastery of the
+90/999 ~ 8%. However, given the time constraints and my current mastery of the
 probability calculus domain I cannot provide a rigorous mathematical estimation
 of the probability that the sum of those random number is a multiple of 11. I
 can say however that the events are not un-related, thus a conditional
