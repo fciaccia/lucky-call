@@ -1,0 +1,9 @@
+.vscode
+.python-version
+__pycache__
+*.egg-info
+*.eps
+.DS_Store
+.venv
+*.model
+.eggs
