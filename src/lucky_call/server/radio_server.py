@@ -51,8 +51,9 @@ class RadioServer(mp.Process):
                 req = self.req_queue.get(timeout=10)
                 if req is None:
                     break
-                print("Received message from caller ", req['pid'])
                 num = int(req['message'].split(KEYWORD)[1])
+                print("Received message from caller %d with number %d" %
+                      (req['pid'], num))
                 self._num_callers += 1
 
                 if num > MAX_NUM:
