@@ -8,11 +8,9 @@ from lucky_call.common import KEYWORD, PRIME, MAX_NUM
 
 class RadioServer(mp.Process):
 
-    def __init__(self, pub_queue, req_queue, db_queue):
+    def __init__(self, pub_queues, req_queue, db_queue):
         mp.Process.__init__(self)
-        self.pub_queue = pub_queue
-        print("server ",pub_queue)
-        print("server ",pub_queue._queues)
+        self.pub_queues = pub_queues
         self.req_queue = req_queue
         self.db_queue = db_queue
         self._magic_number = 0
@@ -31,22 +29,22 @@ class RadioServer(mp.Process):
 
     def check_winner(self):
         if self._magic_number % PRIME == 0:
-            print("And our winner is %d! Congratulations!"%(self._last_pid))
+            print("And our winner is %d with magic number %d! Congratulations!"%(self._last_pid, self._magic_number))
             return True
         else:
             return False
 
     def run(self):
         print("Started RadioServer")
-        sleep(5)
+
         # Publish keyword to RadioClients
-        self.pub_queue.publish(KEYWORD)
-        print("Published keyword ", KEYWORD)
+        for pub_queue in self.pub_queues:
+            pub_queue.put(KEYWORD)
 
         winner = False
         while True:
             try:
-                req = self.req_queue.get()
+                req = self.req_queue.get(timeout=60)
                 if req is None:
                     break
                 print("Received message from caller ", req['pid'])
@@ -60,7 +58,7 @@ class RadioServer(mp.Process):
                 self._magic_number += num
 
                 # Write to db
-                db_queue.put(
+                self.db_queue.put(
                     {
                         'last_pid': self._last_pid,
                         'num_callers': self._num_callers,
@@ -75,7 +73,9 @@ class RadioServer(mp.Process):
             except Exception as e:
                 print(e)
                 sys.exit(0)
+            except KeyboardInterrupt:
+                sys.exit(0)
 
-        db_queue.put(None)
+        self.db_queue.put(None)
         if not winner:
             print("Sorry but nobody won today! Better luck next time.")
