@@ -25,7 +25,7 @@ def main():
     # Setup queues for IPC
     manager = mp.Manager()
     req_queue = manager.Queue()
-    db_queue =  manager.Queue()
+    db_queue = manager.Queue()
     pub_queues = []
 
     # Setup clients
