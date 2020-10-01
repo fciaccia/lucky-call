@@ -1,4 +1,5 @@
 import multiprocessing as mp
+import queue
 import sys
 
 from time import sleep
@@ -29,7 +30,10 @@ class RadioServer(mp.Process):
 
     def check_winner(self):
         if self._magic_number % PRIME == 0:
-            print("And our winner is %d with magic number %d! Congratulations!"%(self._last_pid, self._magic_number))
+            print(
+                "And our winner is %d with magic number %d! Congratulations!" %
+                (self._last_pid, self._magic_number)
+            )
             return True
         else:
             return False
@@ -44,7 +48,7 @@ class RadioServer(mp.Process):
         winner = False
         while True:
             try:
-                req = self.req_queue.get(timeout=60)
+                req = self.req_queue.get(timeout=10)
                 if req is None:
                     break
                 print("Received message from caller ", req['pid'])
@@ -52,7 +56,8 @@ class RadioServer(mp.Process):
                 self._num_callers += 1
 
                 if num > MAX_NUM:
-                    print("Invalid number %d from caller %d"%(num, req['pid']))
+                    print("Invalid number %d from caller %d" %
+                          (num, req['pid']))
 
                 self._last_pid = req['pid']
                 self._magic_number += num
@@ -70,10 +75,19 @@ class RadioServer(mp.Process):
                 if winner:
                     break
 
+            except mp.TimeoutError:
+                pass
+            except queue.Empty:
+                '''
+                Was expecting to catch mp.TimeoutError when queue timed-out
+                instead mp.get() is raising a queue.Empty; catching that for
+                contest graceful termination
+                '''
+                break
+            except KeyboardInterrupt:
+                sys.exit(0)
             except Exception as e:
                 print(e)
-                sys.exit(0)
-            except KeyboardInterrupt:
                 sys.exit(0)
 
         self.db_queue.put(None)
