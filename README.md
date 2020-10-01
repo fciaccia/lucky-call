@@ -40,8 +40,8 @@ the repo, changing to the repo root directory, and running:
 ```
 pip install .
 ```
-assuming you already sourced your virtualenv of choice (optional), have
-python > 3.5.6 and pip installed in your system.
+assuming you already sourced your virtualenv of choice (optional), have python >
+3.5.6 and pip installed in your system.
 
 Once the package is installed, run:
 ```
@@ -59,8 +59,7 @@ optional arguments:
 ```
 
 The systems takes as optional arguments the database file path and the number of
-radio clients to simulate.
-An example run (with database recovery) is:
+radio clients to simulate. An example run (with database recovery) is:
 ```
 (.venv) ❯ lucky_call -c 5
 Recovering Database
@@ -84,10 +83,9 @@ Received message from caller 46037 with number 917
 And our winner is 46037 with magic number 3839! Congratulations!
 ```
 
-It could also happen that nobody wins the contest. This happens when the
-server times-out after all clients have sent their request and the
-magic_number never summed to a multiple of 11. An execution of that kind
-looks like the following:
+It could also happen that nobody wins the contest. This happens when the server
+times-out after all clients have sent their request and the magic_number never
+summed to a multiple of 11. An execution of that kind looks like the following:
 ```
 (.venv) ❯ lucky_call -c 2
 Started RadioClient  46634
@@ -118,10 +116,10 @@ magic_number.
 ## Possible improvements
 This is a toy example that simulates the lucky-call scenario using python
 multiprocessing. To make this an actual system, a pub/sub scheme using
-established protocols and message brokers could be used (e.g. MQTT protocol
-with mosquitto message broker). Another alternative would be to implement a REST
-API. Also, python multiprocessing is hard to debug, and other kind of
-architectural implementation could be considered (e.g. gevent).
+established protocols and message brokers could be used (e.g. MQTT protocol with
+mosquitto message broker). Another alternative would be to implement a REST API.
+Also, python multiprocessing is hard to debug, and other kind of architectural
+implementation could be considered (e.g. gevent).
 
 From an architecture point of view, the server could benefit from scaling
 horizontally (adding other processes/servers) if the computational workload
@@ -133,3 +131,15 @@ data types and record to be maintained, an actual database would necessary.
 
 The system is also missing unit-testing, which would benefit code
 maintainability.
+
+## Contest fairness
+Given that between 1 and 999 we have 90 multiples of 11 we obtain that the
+probability for one of the random client numbers of being a multiple of 11 is
+90/999 ~ 9%. However, given the time constraints and my current mastery of the
+probability calculus domain I cannot provide a rigorous mathematical estimation
+of the probability that the sum of those random number is a multiple of 11. I
+can say however that the events are not un-related, thus a conditional
+probability has to be computed.
+
+The model implemented introduces additional variability thanks to the random
+delay that the clients wait for, before sending the request to the server.
