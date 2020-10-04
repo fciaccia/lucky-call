@@ -132,6 +132,7 @@ data types and record to be maintained, an actual database would necessary.
 The system is also missing unit-testing, which would benefit code
 maintainability.
 
+<!---
 ## Contest fairness
 Given that between 100 and 999 we have 81 multiples of 11 we obtain that the
 probability for one of the random client numbers of being a multiple of 11 is
@@ -143,3 +144,4 @@ probability has to be computed.
 
 The model implemented introduces additional variability thanks to the random
 delay that the clients wait for, before sending the request to the server.
+-->
