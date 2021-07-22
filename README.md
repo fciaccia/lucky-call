@@ -2,7 +2,7 @@
 
 ## Architecture
 This repo contains a possible solution to the problem stated in the pdf named
-lucky-call.pdf accessible in the root directory of the repo itself.
+lucky-call.pdf accessible in the /doc directory of the repo itself.
 
 The system simulates a lucky-call contest where a RadioServer announces a
 special keyword to a group of RadioClients listening to the contest. Once a
